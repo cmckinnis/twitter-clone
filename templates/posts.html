@@ -1,0 +1,58 @@
+{% extends "base.html" %} {% block content %} {% load static %}
+ 
+<section class="content">
+
+    <div class="heading">
+        
+        <img src="{% static 'img/logo.svg' %}" alt="" />
+        <h1>Twitter</h1>
+    </div>
+  
+   <section class="post_form">
+ 
+       <form action="/" method="POST" enctype="multipart/form-data">
+           {% csrf_token %}
+           <input type="text" name="name" placeholder="Username" required />
+           <textarea name="body" placeholder="Text here" required></textarea>
+           <div class="tweet-form">
+            <input type="file" id="choosefile" value="choose file" name="image">
+            <input type="submit" value="Post" />
+           </div>
+       </form>
+   </section>
+   <section class="posts">
+ 
+       <ul>
+           {% for post in posts %}
+           <li>
+               <img class="menu_icon js-menu-icon" src="{% static 'img/menu.svg' %}"/>
+               <div class="menu">
+                   <a href="/edit/{{post.id}}/">Edit</a>
+                   <a href="/delete/{{ post.id }}/">Delete</a>
+               </div>
+               <div class="logo">
+                   <img src="{% static 'img/user.svg' %}" style="width:4vw">
+               </div>
+               <div class="name_body">
+                  <div class ="name">{{ post.name }}<br /></div>
+                  <div class = "datetime">{{post.created_at }}<br /></div><br>
+                   <p>{{ post.body }}<br></p></br>
+                   {% if post.image.url %} 
+                   <img src="{{post.image.url}}" alt="" style="width:10vw; height:10vw;">
+                   {% endif %}
+                   <div class="like">
+                    <a href="/like/{{post.id}}/"><img src="{% static 'img/like.svg' %}" alt="" style="width:2vw"></a>
+                    <h3>{{post.like}}</h3>
+                   </div>
+               </div>                
+           </li>
+           
+       </ul>
+       {% endfor %}
+   </section>
+   <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+   <script src="{% static 'js/posts.js' %}"></script>
+</section>
+ 
+{% endblock %}
+ 
